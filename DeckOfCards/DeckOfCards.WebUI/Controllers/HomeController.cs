@@ -15,6 +15,7 @@ namespace DeckOfCards.WebUI.Controllers
     {
         IRepository<Deck> deckContext;
         DeckService deckService;
+        const string DeckSessionName = "DeckCookie";
 
         public HomeController()
         {
@@ -45,8 +46,17 @@ namespace DeckOfCards.WebUI.Controllers
 
             if (card != null)
             {
-                TempData["CardValue"] = card.Value;
-                TempData["CardSuit"] = card.Suit;
+                HttpCookie cookie = Request.Cookies[DeckSessionName];
+
+                if (cookie == null)
+                {
+                    cookie = new HttpCookie(DeckSessionName);
+                }
+
+                cookie.Values[$"{deck.Id}/CardValue"] = card.Value;
+                cookie.Values[$"{deck.Id}/CardSuit"] = card.Suit;
+                cookie.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Add(cookie);
             }
 
             return RedirectToAction("Details", new { id = deckId });

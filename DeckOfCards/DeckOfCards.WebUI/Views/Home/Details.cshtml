@@ -9,11 +9,19 @@
 <h2>Deck Name</h2>
 
 @{
-    var cardValue = TempData["CardValue"];
-    var cardSuit = TempData["CardSuit"];
-}
+    string cardValue = "";
+    string cardSuit = "";
+    HttpCookie cookie = Request.Cookies["DeckCookie"];
+
+    if (cookie != null)
+    {
+        cardValue = cookie.Values[$"{Model.DeckId}/CardValue"];
+        cardSuit = cookie.Values[$"{Model.DeckId}/CardSuit"];
+    }
+}   
+
 <div class="col-md-3">
-    <div class="card-cover">
+    @if (!string.IsNullOrEmpty(cardValue) && !string.IsNullOrEmpty(cardSuit)){
         <div class="card" style="margin: auto">
             <div class="value-top"><b>@cardValue</b></div>
             <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + cardSuit + ".png")" width="60%" /></div>
@@ -21,7 +29,11 @@
             <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + cardSuit + ".png")" width="60%" /></div>
             <div class="value-bot"><b>@cardValue</b></div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="card" style="margin: auto"></div>
+    }
 
     <div>@Html.ActionLink("Draw Card", "GetCard", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-success center-block space-margin", @style = "margin: 10px" })</div>
     <div>@Html.ActionLink("Shuffle Deck", "ShuffleDeck", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-primary center-block space-margin", @style = "margin: 10px" })</div>

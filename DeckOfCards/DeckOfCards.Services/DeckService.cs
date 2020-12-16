@@ -1,11 +1,6 @@
-﻿using DeckOfCards.Core;
-using DeckOfCards.Core.Contracts;
-using DeckOfCards.Core.Models;
+﻿using DeckOfCards.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeckOfCards.Services
 {
@@ -46,6 +41,7 @@ namespace DeckOfCards.Services
             {
                 firstHalf.Add(deck.Cards[i]);
             }
+
             for (int i = half; i < deck.Cards.Count; i++)
             {
                 secondHalf.Add(deck.Cards[i]);
