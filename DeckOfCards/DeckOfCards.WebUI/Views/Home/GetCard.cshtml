@@ -1,0 +1,19 @@
+﻿@model DeckOfCards.Core.Models.Card
+
+@{
+    ViewBag.Title = "GetCard";
+}
+
+<link rel="stylesheet" href="~/Content/Styles/card-style.css" />
+
+<div class="card">
+    <div class="value-top"><b>@Model.Value</b></div>
+    <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + Model.Suit + ".png")" width="60%" /></div>
+    <div class="img-mid"><img src="@Url.Content("~/Content/Image/" + Model.Suit + ".png")" width="100%"/></div>
+    <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + Model.Suit + ".png")" width="60%" /></div>
+    <div class="value-bot"><b>@Model.Value</b></div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

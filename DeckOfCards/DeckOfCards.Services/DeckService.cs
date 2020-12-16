@@ -11,34 +11,23 @@ namespace DeckOfCards.Services
 {
     public class DeckService
     {
-        IRepository<Deck> DeckContext;
-        Deck currentDeck;
 
-        public DeckService(IRepository<Deck> deckContext)
+        public Deck CreateNewDeck(string deckName)
         {
-            DeckContext = deckContext;
+            if (string.IsNullOrEmpty(deckName))
+                deckName = "New Deck";
+
+            Deck newDeck = PopulateDeck(deckName);
+
+            return newDeck;
         }
 
-        public void CreateNewDeck(string deckName)
+        public Card DrawCard(Deck deck)
         {
-            Deck deck = PopulateDeck(deckName);
-            DeckContext.Insert(deck);
-            DeckContext.Commit();
-        }
-
-        public Deck GetDeck(string id)
-        {
-            currentDeck = DeckContext.Find(id);
-
-            return currentDeck;
-        }
-
-        public Card DrawCard()
-        {
-            if (currentDeck.Cards.Count > 0)
+            if (deck.Cards.Count > 0)
             {
-                var card = currentDeck.Cards[0];
-                currentDeck.Cards.RemoveAt(0);
+                var card = deck.Cards[0];
+                deck.Cards.RemoveAt(0);
 
                 return card;
             }
@@ -46,59 +35,59 @@ namespace DeckOfCards.Services
             return null;
         }
 
-        public void SplitDeck()
+        public void SplitDeck(Deck deck)
         {
             var firstHalf = new List<Card>();
             var secondHalf = new List<Card>();
-            var half = currentDeck.Cards.Count / 2;
+            var half = deck.Cards.Count / 2;
 
             //Split the deck in two parts
             for (int i = 0; i < half; i++)
             {
-                firstHalf.Add(currentDeck.Cards[i]);
+                firstHalf.Add(deck.Cards[i]);
             }
-            for (int i = half; i < currentDeck.Cards.Count; i++)
+            for (int i = half; i < deck.Cards.Count; i++)
             {
-                secondHalf.Add(currentDeck.Cards[i]);
+                secondHalf.Add(deck.Cards[i]);
             }
 
-            currentDeck.Cards.Clear();
+            deck.Cards.Clear();
 
             //Invert the two parts
             foreach (var card in secondHalf)
             {
-                currentDeck.Cards.Add(card);
+                deck.Cards.Add(card);
             }
 
             foreach (var card in firstHalf)
             {
-                currentDeck.Cards.Add(card);
+                deck.Cards.Add(card);
             }
 
         }
 
-        public void ShuffleDeck()
+        public void ShuffleDeck(Deck deck)
         {
             List<Card> shuffledCards = new List<Card>();
             var rnd = new Random();
 
-            while (currentDeck.Cards.Count > 0)
+            while (deck.Cards.Count > 0)
             {
-                int index = rnd.Next(0, currentDeck.Cards.Count);
-                shuffledCards.Add(currentDeck.Cards[index]);
-                currentDeck.Cards.RemoveAt(index);
+                int index = rnd.Next(0, deck.Cards.Count);
+                shuffledCards.Add(deck.Cards[index]);
+                deck.Cards.RemoveAt(index);
             }
 
             foreach (var card in shuffledCards)
             {
-                currentDeck.Cards.Add(card);
+                deck.Cards.Add(card);
             }
         }
 
         private Deck PopulateDeck(string deckName)
         {
             Deck deck = new Deck(deckName);
-            string[] suits = { "Spades", "Clubs", "Diamonds", "Hearts" };
+            string[] suits = { "Spades", "Diamonds", "Clubs", "Hearts" };
 
             foreach (var suit in suits)
             {
@@ -109,16 +98,16 @@ namespace DeckOfCards.Services
                     switch (i)
                     {
                         case 1:
-                            value = "Ace";
+                            value = "A";
                             break;
                         case 11:
-                            value = "Jack";
+                            value = "J";
                             break;
                         case 12:
-                            value = "Queen";
+                            value = "Q";
                             break;
                         case 13:
-                            value = "King";
+                            value = "K";
                             break;
                         default:
                             value = i.ToString();

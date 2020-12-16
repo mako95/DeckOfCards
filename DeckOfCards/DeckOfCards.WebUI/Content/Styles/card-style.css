@@ -1,0 +1,58 @@
+﻿.card {
+    box-sizing: border-box;
+    width: 200px;
+    height: 300px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+    display: grid;
+    grid-template-rows: 10% 15% 50% 15% 10%;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: "vt . ." "st . ." ". im ." ". . sb" ". . vb";
+}
+
+.value-top {
+    grid-area: vt;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    margin: 2px;
+}
+
+.suit-top {
+    grid-area: st;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.img-mid {
+    grid-area: im;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+.suit-bot {
+    grid-area: sb;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    transform: scale(-1,-1);
+}
+
+.value-bot {
+    grid-area: vb;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(-1,-1);
+    margin: 2px;
+}

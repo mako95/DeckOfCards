@@ -1,0 +1,45 @@
+﻿@model DeckOfCards.Core.ViewModels.DeckViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<link rel="stylesheet" href="~/Content/Styles/card-style.css" />
+
+<h2>Deck Name</h2>
+
+@{
+    var cardValue = TempData["CardValue"];
+    var cardSuit = TempData["CardSuit"];
+}
+<div class="col-md-3">
+    <div class="card-cover">
+        <div class="card" style="margin: auto">
+            <div class="value-top"><b>@cardValue</b></div>
+            <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + cardSuit + ".png")" width="60%" /></div>
+            <div class="img-mid"><img src="@Url.Content("~/Content/Image/" + cardSuit + ".png")" width="100%" /></div>
+            <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + cardSuit + ".png")" width="60%" /></div>
+            <div class="value-bot"><b>@cardValue</b></div>
+        </div>
+    </div>
+
+    <div>@Html.ActionLink("Draw Card", "GetCard", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-success center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Shuffle Deck", "ShuffleDeck", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-primary center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Split Deck", "SplitDeck", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-warning center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Delete Deck", "Delete", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-danger center-block space-margin", @style = "margin: 10px" })</div>
+</div>
+
+<div class="col-md-9">
+    @foreach (var item in Model.Cards)
+    {
+        <div class="card col-md-2">
+            <div class="value-top"><b>@item.Value</b></div>
+            <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
+            <div class="img-mid"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="100%" /></div>
+            <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
+            <div class="value-bot"><b>@item.Value</b></div>
+        </div>
+    }
+</div>
+
+<div class="col-md-12 clearfix" />

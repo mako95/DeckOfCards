@@ -158,6 +158,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Image\card-back-black.png" />
+    <Content Include="Content\Image\clubs.png" />
+    <Content Include="Content\Image\diamonds.png" />
+    <Content Include="Content\Image\hearts.png" />
+    <Content Include="Content\Image\spades.png" />
+    <Content Include="Content\Styles\card-style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -186,9 +192,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\GetCard.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -206,6 +213,20 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeckOfCards.Core\DeckOfCards.Core.csproj">
+      <Project>{ED836206-0F7C-4536-9DA8-408043A65A4F}</Project>
+      <Name>DeckOfCards.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeckOfCards.DataAccess\DeckOfCards.DataAccess.csproj">
+      <Project>{BDFD3AAA-ACAF-429C-BCF2-6B011A2F93ED}</Project>
+      <Name>DeckOfCards.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeckOfCards.Services\DeckOfCards.Services.csproj">
+      <Project>{791FE54D-E7C1-45E9-8FB9-C98EA7FF374E}</Project>
+      <Name>DeckOfCards.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
