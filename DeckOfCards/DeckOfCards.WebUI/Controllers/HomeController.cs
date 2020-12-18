@@ -1,6 +1,5 @@
 ﻿using DeckOfCards.Core.Contracts;
 using DeckOfCards.Core.Models;
-using DeckOfCards.Core.ViewModels;
 using DeckOfCards.DataAccess.InMemory;
 using DeckOfCards.Services;
 using System;
@@ -13,36 +12,37 @@ namespace DeckOfCards.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        IRepository<Deck> deckContext;
-        DeckService deckService;
+        IRepository<Deck> DeckContext;
+        IDeckService DeckService;
         const string DeckSessionName = "DeckCookie";
 
-        public HomeController()
+        public HomeController(IRepository<Deck> deckContext, IDeckService deckService)
         {
-            deckContext = new InMemoryRepo<Deck>();
-            deckService = new DeckService();
+            DeckContext = deckContext;
+            DeckService = deckService;
         }
 
         public ActionResult Index()
         {
-            var decks = deckContext.Collection();
+            var decks = DeckContext.Collection().ToList();
 
             return View(decks);
         }
 
         public ActionResult Create(string deckName)
         {
-            var deck = deckService.CreateNewDeck(deckName);
-            deckContext.Insert(deck);
-            deckContext.Commit();
+            var deck = DeckService.CreateNewDeck(deckName);
+            DeckContext.Insert(deck);
+            DeckContext.Commit();
 
             return RedirectToAction("Index");
         }
 
         public ActionResult GetCard(string deckId)
         {
-            var deck = deckContext.Find(deckId);
-            var card = deckService.DrawCard(deck);
+            var deck = DeckContext.Find(deckId);
+            var card = DeckService.DrawCard(deck);
+            DeckContext.Commit();
 
             if (card != null)
             {
@@ -64,18 +64,20 @@ namespace DeckOfCards.WebUI.Controllers
 
         public ActionResult ShuffleDeck(string deckId)
         {
-            var deck = deckContext.Find(deckId);
-            deckService.ShuffleDeck(deck);
-            deckContext.Commit();
+            var deck = DeckContext.Find(deckId);
+            DeckService.ShuffleDeck(deck);
+            DeckContext.Update(deck);
+            DeckContext.Commit();
 
             return RedirectToAction("Details", new { id = deckId });
         }
 
         public ActionResult SplitDeck(string deckId)
         {
-            var deck = deckContext.Find(deckId);
-            deckService.SplitDeck(deck);
-            deckContext.Commit();
+            var deck = DeckContext.Find(deckId);
+            DeckService.SplitDeck(deck);
+            DeckContext.Update(deck);
+            DeckContext.Commit();
 
             return RedirectToAction("Details", new { id = deckId });
         }
@@ -83,16 +85,16 @@ namespace DeckOfCards.WebUI.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            var deck = deckContext.Find(id);
-            DeckViewModel model = new DeckViewModel(deck.Id, deck.Cards);
+            var deck = DeckContext.Find(id);
+            deck.Cards = deck.Cards.OrderBy(c => c.Position).ToList();
 
-            return View(model);
+            return View(deck);
         }
 
         [HttpGet]
         public ActionResult Delete(string deckId)
         {
-            var deckToDelete = deckContext.Find(deckId);
+            var deckToDelete = DeckContext.Find(deckId);
 
             if (deckToDelete == null)
             {
@@ -106,8 +108,8 @@ namespace DeckOfCards.WebUI.Controllers
         [ActionName("Delete")]
         public ActionResult ConfirmDelete(string deckId)
         {
-            deckContext.Delete(deckId);
-            deckContext.Commit();
+            DeckContext.Delete(deckId);
+            DeckContext.Commit();
 
             return RedirectToAction("Index");
         }

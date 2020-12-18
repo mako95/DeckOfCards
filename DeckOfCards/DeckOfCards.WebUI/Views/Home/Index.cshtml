@@ -32,7 +32,14 @@
                 </a>
             </div>
             <div><b>@item.DeckName</b></div>
-            <div>@item.Cards.Count() Cards</div>
+            @if (item.CardCount == 1)
+            {
+                <div>@item.CardCount Card</div>
+            }
+            else
+            {
+                <div>@item.CardCount Cards</div>
+            }
         </div>
     }
 </div>

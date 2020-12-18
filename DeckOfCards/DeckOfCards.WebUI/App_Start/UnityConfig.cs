@@ -1,3 +1,8 @@
+using DeckOfCards.Core.Contracts;
+using DeckOfCards.Core.Models;
+using DeckOfCards.DataAccess.InMemory;
+using DeckOfCards.DataAccess.SQL;
+using DeckOfCards.Services;
 using System;
 
 using Unity;
@@ -42,6 +47,8 @@ namespace DeckOfCards.WebUI
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IRepository<Deck>, SQLRepo<Deck>>();
+            container.RegisterType<IDeckService, DeckService>();
         }
     }
 }

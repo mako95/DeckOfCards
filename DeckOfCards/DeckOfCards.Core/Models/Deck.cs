@@ -7,13 +7,15 @@ namespace DeckOfCards.Core.Models
 {
     public class Deck : BaseEntity
     {
-        public List<Card> Cards { get; set; }
-        public string DeckName { get; }
+        public string DeckName { get; set; }
+        public virtual IList<Card> Cards { get; set; }
+        public int CardCount { get; set; }
 
-        public Deck(string deckName)
+
+        public Deck()
         {
-            DeckName = deckName;
             Cards = new List<Card>();
+            CardCount = Cards.Count;
         }
     }
 }

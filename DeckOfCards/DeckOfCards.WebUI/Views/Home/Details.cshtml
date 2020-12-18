@@ -1,4 +1,4 @@
-﻿@model DeckOfCards.Core.ViewModels.DeckViewModel
+﻿@model DeckOfCards.Core.Models.Deck
 
 @{
     ViewBag.Title = "Details";
@@ -15,8 +15,8 @@
 
     if (cookie != null)
     {
-        cardValue = cookie.Values[$"{Model.DeckId}/CardValue"];
-        cardSuit = cookie.Values[$"{Model.DeckId}/CardSuit"];
+        cardValue = cookie.Values[$"{Model.Id}/CardValue"];
+        cardSuit = cookie.Values[$"{Model.Id}/CardSuit"];
     }
 }   
 
@@ -35,22 +35,27 @@
         <div class="card" style="margin: auto"></div>
     }
 
-    <div>@Html.ActionLink("Draw Card", "GetCard", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-success center-block space-margin", @style = "margin: 10px" })</div>
-    <div>@Html.ActionLink("Shuffle Deck", "ShuffleDeck", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-primary center-block space-margin", @style = "margin: 10px" })</div>
-    <div>@Html.ActionLink("Split Deck", "SplitDeck", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-warning center-block space-margin", @style = "margin: 10px" })</div>
-    <div>@Html.ActionLink("Delete Deck", "Delete", new { deckId = Model.DeckId }, htmlAttributes: new { @class = "btn btn-danger center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Draw Card", "GetCard", new { deckId = Model.Id }, htmlAttributes: new { @class = "btn btn-success center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Shuffle Deck", "ShuffleDeck", new { deckId = Model.Id }, htmlAttributes: new { @class = "btn btn-primary center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Split Deck", "SplitDeck", new { deckId = Model.Id }, htmlAttributes: new { @class = "btn btn-warning center-block space-margin", @style = "margin: 10px" })</div>
+    <div>@Html.ActionLink("Delete Deck", "Delete", new { deckId = Model.Id }, htmlAttributes: new { @class = "btn btn-danger center-block space-margin", @style = "margin: 10px" })</div>
 </div>
 
 <div class="col-md-9">
+    <div class="col-md-12"><h2>Cards: @Model.CardCount</h2></div>
     @foreach (var item in Model.Cards)
     {
-        <div class="card col-md-2">
-            <div class="value-top"><b>@item.Value</b></div>
-            <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
-            <div class="img-mid"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="100%" /></div>
-            <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
-            <div class="value-bot"><b>@item.Value</b></div>
-        </div>
+        if (item.InDeck)
+        {
+            <div class="card col-md-2">
+                <div class="value-top"><b>@item.Value</b></div>
+                <div class="suit-top"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
+                <div class="img-mid"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="100%" /></div>
+                <div class="suit-bot"><img src="@Url.Content("~/Content/Image/" + item.Suit + ".png")" width="60%" /></div>
+                <div class="value-bot"><b>@item.Value</b></div>
+            </div>
+        }
+
     }
 </div>
 
